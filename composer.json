@@ -1,0 +1,18 @@
+{
+    "require": {
+        "pimple/pimple": "^3.4",
+        "ext-json": "*",
+        "ext-iconv": "*",
+        "htmlburger/carbon-fields": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "CPY\\": "includes",
+            "CPY\\Processors\\": "processors"
+        },
+        "files": [
+            "includes/helpers.php",
+            "vendor/htmlburger/carbon-fields/core/functions.php"
+        ]
+    }
+}
