@@ -3,6 +3,7 @@
 namespace CPY;
 
 use CPY\Options\OptionsServiceProvider;
+use CPY\Order\OrderServiceProvider;
 use CPY\Processors\Actions;
 use CPY\Processors\Filters;
 use CPY\Tokens\TokensServiceProvider;
@@ -20,7 +21,8 @@ class Application extends Container {
 
     protected array $providers = [
         OptionsServiceProvider::class,
-        TokensServiceProvider::class
+        TokensServiceProvider::class,
+        OrderServiceProvider::class,
     ];
 
     public array $processors = [

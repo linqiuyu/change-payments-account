@@ -10,6 +10,7 @@ class Filters implements ProcessorInterface {
     private Application $app;
 
     public function process( $app ) {
+        $this->app = $app;
         $this->filters();
         if ( is_admin() ) {
             $this->admin_filters();
@@ -18,7 +19,8 @@ class Filters implements ProcessorInterface {
     }
 
     public function filters() {
-
+        // Tokens
+        add_filter( 'woocommerce_payment_successful_result', [ $this->app[ 'tokens' ], 'add_order_token_meta' ], 10, 2 );
     }
 
     public function admin_filters() {

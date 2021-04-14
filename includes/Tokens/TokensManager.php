@@ -3,11 +3,23 @@
 namespace CPY\Tokens;
 
 use Carbon_Fields\Field\Field;
-use function foo\func;
 
 class TokensManager {
 
     const Options_Name = 'cpy_payments_tokens';
+
+    private $error_tokens;
+
+    /**
+     * @return ErrorTokens
+     */
+    public function error_tokens() {
+        if ( ! $this->error_tokens ) {
+            $this->error_tokens = new ErrorTokens();
+        }
+
+        return $this->error_tokens;
+    }
 
     /**
      * @return array
@@ -40,12 +52,7 @@ class TokensManager {
      * @return string
      */
     public function get_current_token_name() {
-        if ( ( $private_token = get_option( 'jetpack_private_options' ) ) && ( $options = get_option( 'jetpack_options' ) ) ) {
-            return get_user_by( 'ID', $options[ 'master_user' ] )->user_email . ': ' . $private_token[ 'user_tokens' ][ $options[ 'master_user' ] ];
-        } else {
-            return 0;
-        }
-
+        return carbon_get_theme_option( 'cpy_current_token' );
     }
 
     /**
@@ -101,6 +108,10 @@ class TokensManager {
         }
     }
 
+    public function prepare_token_name( $name ) {
+        return str_replace( [ 'https://', 'http://' ], '', $name );
+    }
+
     /**
      * 记录jetpack_private_options
      *
@@ -108,15 +119,16 @@ class TokensManager {
      * @param $value
      */
     public function update_jetpack_private_options_listener( $old_value, $value ) {
-        if ( ! empty( $value['user_tokens'] ) ) {
-            $user_id = array_key_first( $value[ 'user_tokens' ] );
-            $name = get_user_by( 'ID', $user_id )->user_email . ': ' . $value[ 'user_tokens' ][ $user_id ];
-            $this->add_token(
-                $name,
-                $value,
-                true
-            );
-            update_option( '_cpy_current_token', $name);
+        if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+            if ( ! empty( $value['user_tokens'] ) ) {
+                $name = $this->prepare_token_name( site_url() );
+                $this->add_token(
+                    $name,
+                    $value,
+                    true
+                );
+                carbon_set_theme_option( 'cpy_current_token', $name );
+            }
         }
     }
 
@@ -127,15 +139,16 @@ class TokensManager {
      * @param array $value
      */
     public function update_jetpack_options_listener( $old_value, $value ) {
-        if ( ! isset( $value[ 'master_user' ] ) ) {
-           return;
-        }
+        if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+            if ( ! isset( $value[ 'master_user' ] ) ) {
+                return;
+            }
 
-        $private_options = get_option( 'jetpack_private_options' );
-        $this->add_token(
-            get_user_by( 'ID', $value[ 'master_user' ] )->user_email . ': ' . $private_options[ 'user_tokens' ][ $value[ 'master_user' ] ],
-            $value
-        );
+            $this->add_token(
+                $this->prepare_token_name( site_url() ),
+                $value
+            );
+        }
     }
 
     /**
@@ -145,6 +158,9 @@ class TokensManager {
         $options = [];
         foreach ( $this->get_tokens() as $name => $token) {
             $options[ $name ] = $name;
+            if ( $this->error_tokens()->is_error_tokens( $name ) ) {
+                $options[ $name ] .= '（token已失效!）';
+            }
         }
 
         return $options;
@@ -195,6 +211,31 @@ class TokensManager {
         }
 
         return $field;
+    }
+
+    /**
+     * 为使用woocommerce_payments支付的订单添加meta，记录支付的token用于退款
+     *
+     * @param array $result
+     * @param int $order_id
+     * @return array
+     */
+    public function add_order_token_meta( $result, $order_id ) {
+        $order = wc_get_order( $order_id );
+        if ( $order->get_payment_method() === 'woocommerce_payments' ) {
+            update_post_meta( $order_id, 'woocommerce_payments_token_name', $this->get_current_token_name() );
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function error_token_listener( $value ) {
+        if ( $value === 'ERROR' ) {
+            $this->error_tokens()->add_error_tokens( $this->get_current_token_name() );
+        }
     }
 
 }

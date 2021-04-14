@@ -38,11 +38,12 @@ class Actions implements ProcessorInterface{
         add_action( 'carbon_fields_before_field_save', [ $this->app[ 'tokens' ], 'cpy_delete_token_listener' ] );
         add_action( 'cpy_current_token_options', [ $this->app[ 'tokens' ], 'current_token_options' ] );
         add_action( 'cpy_bind_new_account', [ $this->app[ 'tokens' ], 'reset_jetpack_tokens' ] );
+        add_action( 'set_transient_wcpay_account_data', [ $this->app[ 'tokens' ], 'error_token_listener' ] );
 
     }
 
     public function admin_actions() {
-
+        add_action( 'admin_enqueue_scripts', [ $this->app[ 'order' ], 'admin_order_script' ] );
     }
 
     public function template_actions() {
