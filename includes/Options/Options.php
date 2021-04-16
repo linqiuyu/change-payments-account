@@ -18,9 +18,7 @@ class Options {
         $tokens = apply_filters( 'cpy_current_token_options', [] );
         Container::make( 'theme_options', 'Change Payments Account' )
             ->add_tab( '切换账号', [
-                Field::make( 'select', 'cpy_current_token', '当前账号' )
-                    ->set_options( array_merge( [ 0 => '未设置' ], $tokens ) ),
-                Field::make( 'checkbox', 'cpy_schedule_enabled', '开启账号轮询' ),
+                Field::make( 'checkbox', 'cpy_schedule_enabled', '开启账号轮询（会自动跳过错误账号）' ),
                 Field::make( 'select', 'cpy_schedule_recurrence', '轮询间隔' )
                     ->set_options( [
                         'hourly' => '每小时',
@@ -34,6 +32,8 @@ class Options {
                             'compare' => '=',
                         ]
                     ] ),
+                Field::make( 'select', 'cpy_current_token', '当前账号' )
+                    ->set_options( array_merge( [ 0 => '未设置' ], $tokens ) ),
                 Field::make( 'html', 'cpy_add_token' )
                     ->set_html( sprintf( '<a href="%s">绑定新账号</a>', esc_url( site_url( '?wc-ajax=cpy_bind_new_account' ) ) ) ),
             ] )

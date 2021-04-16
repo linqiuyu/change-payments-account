@@ -3,6 +3,7 @@
 namespace CPY\Tokens;
 
 use Carbon_Fields\Field\Field;
+use WC_Payments;
 
 class TokensManager {
 
@@ -13,12 +14,37 @@ class TokensManager {
     /**
      * @return ErrorTokens
      */
-    public function error_tokens() {
+    private function error_tokens() {
         if ( ! $this->error_tokens ) {
             $this->error_tokens = new ErrorTokens();
         }
 
         return $this->error_tokens;
+    }
+
+    /**
+     * @param string|null $name
+     * @return bool
+     */
+    public function is_error_token( $name = null ) {
+        if ( $name ) {
+            return $this->error_tokens()->is_error_token( $name );
+        }
+        return WC_Payments::get_gateway()->needs_setup();
+    }
+
+    /**
+     * @param string $name
+     */
+    public function add_error_token( $name ) {
+        $this->error_tokens()->add_error_token(  apply_filters( 'cpy_new_error_token', $name ) );
+    }
+
+    /**
+     * @param string $name
+     */
+    public function remove_error_token( $name ) {
+        $this->error_tokens()->remove_error_token( $name );
     }
 
     /**
@@ -91,6 +117,7 @@ class TokensManager {
 
             update_option( self::Options_Name, $tokens, false );
             delete_transient( 'wcpay_account_data' );
+            $this->remove_error_token( $name );
         }
     }
 
@@ -98,6 +125,10 @@ class TokensManager {
      * @param string $name
      */
     public function set_token( $name ) {
+        if ( $name === $this->get_current_token_name() ) {
+            return;
+        }
+
         if ( $token = $this->get_token( $name ) ) {
             foreach ( $token as $option_name => $option ) {
                 update_option( $option_name, $option );
@@ -127,7 +158,9 @@ class TokensManager {
                     $value,
                     true
                 );
-                carbon_set_theme_option( 'cpy_current_token', $name );
+                update_option( '_cpy_current_token', $name );
+                zx_woocommerce_log( $name );
+                $this->remove_error_token( $name );
             }
         }
     }
@@ -158,8 +191,8 @@ class TokensManager {
         $options = [];
         foreach ( $this->get_tokens() as $name => $token) {
             $options[ $name ] = $name;
-            if ( $this->error_tokens()->is_error_tokens( $name ) ) {
-                $options[ $name ] .= '（token已失效!）';
+            if ( $this->is_error_token( $name ) ) {
+                $options[ $name ] .= '（错误账号!）';
             }
         }
 
@@ -185,6 +218,12 @@ class TokensManager {
     public function cpy_change_current_token_listener( $field ) {
         if ( $field->get_base_name() === 'cpy_current_token' ) {
             $token = $field->get_value();
+
+            if ( $token === 0 ) {
+                $this->reset_jetpack_tokens();
+                return $field;
+            }
+
             if ( $token !== $this->get_current_token_name() ) {
                 $this->set_token( $field->get_value() );
             }
@@ -234,8 +273,15 @@ class TokensManager {
      */
     public function error_token_listener( $value ) {
         if ( $value === 'ERROR' ) {
-            $this->error_tokens()->add_error_tokens( $this->get_current_token_name() );
+            $this->add_error_token( $this->get_current_token_name() );
         }
+    }
+
+    /**
+     * 定时任务初始化
+     */
+    public function schedule_init() {
+        ( new TokensChangeSchedule( $this ) )->init();
     }
 
 }
