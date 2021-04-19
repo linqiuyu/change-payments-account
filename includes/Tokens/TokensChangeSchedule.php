@@ -22,19 +22,24 @@ class TokensChangeSchedule {
     public function init() {
         // 添加tokens轮询
         if ( carbon_get_theme_option( 'cpy_schedule_enabled' ) ) {
-            if ( ! wp_next_scheduled( 'cpy_tokens_change_schedule' ) ) {
-                $schedules = wp_get_schedules();
-                if ( isset( $schedules[ carbon_get_theme_option( 'cpy_schedule_recurrence' ) ] ) ) {
-                    $time = time() + $schedules[ carbon_get_theme_option( 'cpy_schedule_recurrence' ) ][ 'interval' ];
 
-                    wp_schedule_event(
-                        $time,
-                        carbon_get_theme_option( 'cpy_schedule_recurrence' ),
-                        'cpy_tokens_change_schedule'
-                    );
+            if ( carbon_get_theme_option( 'cpy_schedule_mode' ) === 'time' ) {
+                if ( ! wp_next_scheduled( 'cpy_tokens_change_schedule' ) ) {
+                    $schedules = wp_get_schedules();
+                    if ( isset( $schedules[ carbon_get_theme_option( 'cpy_schedule_recurrence' ) ] ) ) {
+                        $time = time() + $schedules[ carbon_get_theme_option( 'cpy_schedule_recurrence' ) ][ 'interval' ];
+
+                        wp_schedule_event(
+                            $time,
+                            carbon_get_theme_option( 'cpy_schedule_recurrence' ),
+                            'cpy_tokens_change_schedule'
+                        );
+                    }
                 }
+
+                add_action( 'cpy_tokens_change_schedule', [ $this, 'tokens_change_schedule' ] );
             }
-            add_action( 'cpy_tokens_change_schedule', [ $this, 'tokens_change_schedule' ] );
+
             add_filter( 'cpy_new_error_token', [ $this, 'trigger_schedule' ] );
         }
     }
