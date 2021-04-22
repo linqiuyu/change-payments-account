@@ -17,6 +17,7 @@ class Actions implements ProcessorInterface{
 
     public function process( $app ) {
         $this->app = $app;
+        register_activation_hook( CPY_PLUGIN_FILE, [ $this->app[ 'activate' ], 'activate' ] );
         $this->actions();
         if ( is_admin() ) {
             $this->admin_actions();

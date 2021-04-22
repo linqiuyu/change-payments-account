@@ -146,12 +146,13 @@ class TokensManager {
     /**
      * 记录jetpack_private_options
      *
-     * @param $old_value
-     * @param $value
+     * @param mixed $old_value
+     * @param array $value
+     * @param bool $force
      */
-    public function update_jetpack_private_options_listener( $old_value, $value ) {
-        if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
-            if ( ! empty( $value['user_tokens'] ) ) {
+    public function update_jetpack_private_options_listener( $old_value, $value, $force = false ) {
+        if ( ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) || $force ) {
+            if ( ! empty( $value[ 'user_tokens' ] ) ) {
                 $name = $this->prepare_token_name( site_url() );
                 $this->add_token(
                     $name,
@@ -170,9 +171,10 @@ class TokensManager {
      *
      * @param mixed $old_value
      * @param array $value
+     * @param bool $force
      */
-    public function update_jetpack_options_listener( $old_value, $value ) {
-        if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+    public function update_jetpack_options_listener( $old_value, $value, $force = false ) {
+        if ( ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) || $force ) {
             if ( ! isset( $value[ 'master_user' ] ) ) {
                 return;
             }

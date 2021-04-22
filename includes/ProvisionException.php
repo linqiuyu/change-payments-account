@@ -2,7 +2,7 @@
 
 namespace CPY;
 
-use Socket\Raw\Exception;
+use Exception;
 
 class ProvisionException extends Exception {
 
