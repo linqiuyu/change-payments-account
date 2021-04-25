@@ -42,6 +42,8 @@ class Actions implements ProcessorInterface{
         add_action( 'set_transient_wcpay_account_data', [ $this->app[ 'tokens' ], 'error_token_listener' ] );
         add_action( 'init', [ $this->app[ 'tokens' ], 'schedule_init' ] );
 
+        add_action( 'activate_woocommerce-payments/woocommerce-payments.php', [ $this->app[ 'activate' ], 'activate_woocommerce_payments_listener' ] );
+
     }
 
     public function admin_actions() {
