@@ -9,3 +9,5 @@ if ( ! defined( 'CPY_PLUGIN_FILE' ) ) {
 if ( ! defined( 'PF_PLUGIN_DIR' ) ) {
     define( 'CPY_PLUGIN_DIR', plugin_dir_path( CPY_PLUGIN_FILE ) );
 }
+
+require_once CPY_PLUGIN_DIR . 'vendor/autoload.php';
