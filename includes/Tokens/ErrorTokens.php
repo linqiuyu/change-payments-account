@@ -39,7 +39,6 @@ class ErrorTokens {
      */
     public function remove_error_token( $name ) {
         $key = array_search( $name ,$this->error_tokens );
-        zx_woocommerce_log( $key );
         if ( $key !== false ) {
             unset( $this->error_tokens[ $key ] );
         }

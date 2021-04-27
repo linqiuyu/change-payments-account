@@ -61,6 +61,7 @@ class TokensChangeSchedule {
      * 修改账户任务逻辑
      */
     public function tokens_change_schedule() {
+        zx_woocommerce_log( 'cpy_tokens_change_schedule' );
         $names = array_keys( $this->tokens->get_tokens() );
         if ( empty( $names ) ) {
             return;
@@ -80,7 +81,9 @@ class TokensChangeSchedule {
             }
         }
 
-        $this->tokens->set_token( $names[ 0 ] );
+        if ( $current_name !== $names[ 0 ] ) {
+            $this->tokens->set_token( $names[ 0 ] );
+        }
 
         $this->add_schedule();
     }

@@ -159,7 +159,6 @@ class TokensManager {
                     true
                 );
                 update_option( '_cpy_current_token', $name );
-                zx_woocommerce_log( $name );
                 $this->remove_error_token( $name );
             }
         }
