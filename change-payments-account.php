@@ -1,14 +1,13 @@
 <?php
 /**
  * Plugin Name: Change Payment Account
- * Plugin URI: https://github.com/linqiuyu/page-fetcher
- * Description: 更换woocommerce-payments支付账号
+ * Description: Change woocommerce-payments account
  * Version: 1.0.0
  * Requires PHP: 7.4
  * Author: linqiuyu
  * License: GNU General Public License v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: change-payment-account
+ * Text Domain: change-payments-account
  * Domain Path: languages
  */
 

@@ -3,6 +3,7 @@
 namespace CPY;
 
 use CPY\Activate\ActivateProvider;
+use CPY\I18n\I18nServiceProvider;
 use CPY\Options\OptionsServiceProvider;
 use CPY\Order\OrderServiceProvider;
 use CPY\Processors\Actions;
@@ -25,6 +26,7 @@ class Application extends Container {
         TokensServiceProvider::class,
         OrderServiceProvider::class,
         ActivateProvider::class,
+        I18nServiceProvider::class,
     ];
 
     public array $processors = [

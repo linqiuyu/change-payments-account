@@ -130,9 +130,8 @@ class TokensManager {
         }
 
         if ( $token = $this->get_token( $name ) ) {
-            foreach ( $token as $option_name => $option ) {
-                update_option( $option_name, $option );
-            }
+            update_option( 'jetpack_private_options', $token[ 'jetpack_private_options' ] ?? [] );
+            update_option( 'jetpack_options', $token[ 'jetpack_options' ] ?? [] );
             delete_transient( 'wcpay_account_data' );
         } elseif ( $name == 0 ) {
             $this->reset_jetpack_tokens();
@@ -194,7 +193,7 @@ class TokensManager {
         foreach ( $this->get_tokens() as $name => $token) {
             $options[ $name ] = $name;
             if ( $this->is_error_token( $name ) ) {
-                $options[ $name ] .= '（错误账号!）';
+                $options[ $name ] .= ' (' . __( 'error account', 'change-payments-account' ) . ')';
             }
         }
 

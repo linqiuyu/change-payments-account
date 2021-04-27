@@ -1,0 +1,90 @@
+# Copyright (C) 2021 linqiuyu
+# This file is distributed under the same license as the Change Payment Account plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Change Payment Account 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/change-payments-"
+"account\n"
+"POT-Creation-Date: 2021-04-27T07:59:22+00:00\n"
+"PO-Revision-Date: 2021-04-27 16:03+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Domain: change-payment-account\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Plugin Name of the plugin
+msgid "Change Payment Account"
+msgstr "Change Payment Account"
+
+#. Description of the plugin
+msgid "Change woocommerce-payments account"
+msgstr "切换woocommerce-payments绑定的账号"
+
+#. Author of the plugin
+msgid "linqiuyu"
+msgstr "linqiuyu"
+
+#: includes/Options/Options.php:15
+msgid "Change Payments Account"
+msgstr "Change Payments Account"
+
+#: includes/Options/Options.php:16
+msgid "Change Account"
+msgstr "切换账号"
+
+#: includes/Options/Options.php:17
+msgid "Start the account loop (will automatically skip the wrong account)"
+msgstr "启动账号循环（将自动跳过错误的账号）"
+
+#: includes/Options/Options.php:19
+msgid "Loop interval"
+msgstr "循环间隔"
+
+#: includes/Options/Options.php:21
+msgid "Hourly"
+msgstr "每小时"
+
+#: includes/Options/Options.php:22
+msgid "Twice daily"
+msgstr "每12小时"
+
+#: includes/Options/Options.php:23
+msgid "Daily"
+msgstr "每天"
+
+#: includes/Options/Options.php:24
+msgid "Weekly"
+msgstr "每周"
+
+#: includes/Options/Options.php:33
+msgid "Current account"
+msgstr "当前账号"
+
+#: includes/Options/Options.php:34
+msgid "unset"
+msgstr "未设置"
+
+#: includes/Options/Options.php:37
+msgid "Bind new account"
+msgstr "绑定新账号"
+
+#: includes/Options/Options.php:39
+msgid "Delete accounts"
+msgstr "删除账号"
+
+#: includes/Options/Options.php:40
+msgid ""
+"Select the account that you want to delete (Orders receiving Payments with a "
+"selected account will not be refundable through Woocommerce Payments!)"
+msgstr ""
+"选择要删除的账号（使用选定的账号接收付款的订单将无法通过 Woocommerce "
+"Payments 进行退款！)"
+
+#: includes/Tokens/TokensManager.php:196
+msgid "error account"
+msgstr "错误账号"

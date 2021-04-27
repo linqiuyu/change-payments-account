@@ -26,6 +26,7 @@ class Actions implements ProcessorInterface{
     }
 
     public function actions() {
+        add_action( 'plugins_loaded', [ $this->app[ 'i18n' ], 'load_textdomain' ] );
         add_action( 'after_setup_theme', [ Carbon_Fields::class, 'boot' ] );
 
         // Options
