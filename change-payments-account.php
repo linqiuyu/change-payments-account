@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: Change Payment Account
+ * Plugin Name: Change Payments Account
  * Description: Change woocommerce-payments account
- * Version: 1.0.0
+ * Version: 0.0.1
  * Requires PHP: 7.4
- * Author: linqiuyu
+ * Author: linqiuyu191
  * License: GNU General Public License v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: change-payments-account

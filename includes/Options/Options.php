@@ -34,7 +34,7 @@ class Options {
                     ->set_options( array_merge( [ 0 => __( 'unset', 'change-payments-account' ) ], $tokens ) ),
 
                 Field::make( 'html', 'cpy_add_token' )
-                    ->set_html( sprintf( '<a href="%s">' . __( 'Bind new account', 'change-payments-account' ) . '</a>', esc_url( site_url( '?wc-ajax=cpy_bind_new_account' ) ) ) ),
+                    ->set_html( sprintf( '<a href="%s">' . __( 'Connect new account', 'change-payments-account' ) . '</a>', esc_url( site_url( '?wc-ajax=cpy_bind_new_account' ) ) ) ),
             ] )
             ->add_tab( __( 'Delete accounts', 'change-payments-account' ), [
                 Field::make( 'multiselect', 'crb_delete_accounts', __( 'Select the account that you want to delete (Orders receiving Payments with a selected account will not be refundable through Woocommerce Payments!)', 'change-payments-account' ) )

@@ -193,7 +193,7 @@ class TokensManager {
         foreach ( $this->get_tokens() as $name => $token) {
             $options[ $name ] = $name;
             if ( $this->is_error_token( $name ) ) {
-                $options[ $name ] .= ' (' . __( 'error account', 'change-payments-account' ) . ')';
+                $options[ $name ] .= ' (' . __( 'Invalid account!', 'change-payments-account' ) . ')';
             }
         }
 
