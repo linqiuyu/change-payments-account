@@ -9,7 +9,7 @@ use CPY\ProcessorInterface;
 /**
  * Class Actions
  *
- * @package PF\Processors
+ * @package CPY\Processors
  */
 class Actions implements ProcessorInterface{
 

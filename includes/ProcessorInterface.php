@@ -5,7 +5,7 @@ namespace CPY;
 /**
  * Interface ProcessorInterface
  *
- * @package PF
+ * @package CPY
  */
 interface ProcessorInterface {
 

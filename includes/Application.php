@@ -17,7 +17,7 @@ use ReflectionFunctionAbstract;
 /**
  * Class Application
  *
- * @package PF
+ * @package CPY
  */
 class Application extends Container {
 
